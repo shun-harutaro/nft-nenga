@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import gpt, location
+from routers import gpt, location, nft
 from utils.config import check_env_variables
 
 
@@ -17,6 +17,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(location.router)
 app.include_router(gpt.router)
+app.include_router(nft.router)
 
 origins = [
     "http://localhost:8000",
