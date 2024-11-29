@@ -1,5 +1,5 @@
 <template>
-  <button @click="handleLogin">LINEでログイン</button>
+  <button @click="handleLogin"><img src="@/assets/btn_login_base.png" alt="LINEでログイン" /></button>
 </template>
 
 <script>
