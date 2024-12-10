@@ -7,8 +7,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./localhost-cert.pem:/etc/nginx/localhost-cert.pem
-      - ./localhost-key.pem:/etc/nginx/localhost-key.pem
+      - ./localhost-cert.pem:/etc/nginx/localhost-cert.pem:ro,z
+      - ./localhost-key.pem:/etc/nginx/localhost-key.pem:ro,z
     depends_on:
       - backend
       - frontend

@@ -1,15 +1,15 @@
 <template>
   <div>
     <h1>近くの神社を検索</h1>
-    <button @click="getLocation">現在地を取得して神社を検索</button>
     <div v-if="loading">ロード中...</div>
     <div v-if="error">{{ error }}</div>
     <div v-if="!loading && !error && shrines.length > 0">
-      <h2>神社リスト:</h2>
+      <h2>参拝したい神社を選択してください</h2>
       <ul>
         <li v-for="shrine in shrines" :key="shrine.name">
-          <strong>{{ shrine.name }}</strong> - {{ shrine.address }}
-          <button @click="selectShrine(shrine)">選択</button>
+          <button class="shrine-button" @click="selectShrine(shrine)">
+            {{ shrine.name }} ： {{ shrine.distance }}
+          </button>
         </li>
       </ul>
     </div>
@@ -24,6 +24,7 @@
 
 <script>
 import apiAxios from "@/plugin/axios";
+
 export default {
   data() {
     return {
@@ -32,6 +33,10 @@ export default {
       loading: false, // ロード中フラグ
       error: null, // エラーメッセージ
     };
+  },
+  created() {
+    // ページが表示されたときに神社を取得
+    this.getLocation();
   },
   methods: {
     async getLocation() {
@@ -52,7 +57,12 @@ export default {
                 { params: { latitude, longitude } }
               );
               if (response.data && response.data.shrines) {
-                this.shrines = response.data.shrines;
+                // 必要なデータだけを保持
+                this.shrines = response.data.shrines.map((shrine) => ({
+                  name: shrine.name,
+                  address: shrine.address,
+                  distance: shrine.distance,
+                }));
               } else {
                 this.error = "データの取得に失敗しました。";
               }
@@ -89,7 +99,7 @@ button {
   padding: 0.5em 1em;
   font-size: 1em;
   cursor: pointer;
-  margin-left: 0.5em;
+  margin-bottom: 1em;
 }
 
 ul {
@@ -101,7 +111,30 @@ li {
   margin: 0.5em 0;
 }
 
+.shrine-button {
+  display: inline-block; /* インラインブロックで幅を調整 */
+  font-size: 1em;
+  padding: 0.75em 1.5em;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto; /* 自動調整 */
+  white-space: nowrap; /* テキストが改行されないようにする */
+}
+
+.shrine-button:hover {
+  background-color: #e6e6e6;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* ボタンを左揃え */
+}
+
 strong {
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 </style>
