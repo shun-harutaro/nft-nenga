@@ -8,7 +8,7 @@ const error = ref(null); // エラー情報
 
 const fetchUser = async () => {
   try {
-    const response = await apiAxios.get('/api/users/me');
+    const response = await apiAxios.get('/api/users/me/profile');
     user.value = response.data;
   } catch (err) {
     error.value = 'Failed to load user information.';
