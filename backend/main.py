@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 # from fastapi.middleware.cors import CORSMiddleware
 
-from routers import gpt, location, auth, nft, user
+from routers import gpt, location, auth, nft, user,nft_database
 from utils.config import check_env_variables
 
 
@@ -20,7 +20,7 @@ app.include_router(gpt.router)
 app.include_router(auth.router)
 app.include_router(nft.router)
 app.include_router(user.router)
-
+app.include_router(nft_database.router)
 
 """
 origins = [
